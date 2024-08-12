@@ -1,0 +1,6 @@
+@Payslip_HostAddress = http://localhost:5178
+
+GET {{Payslip_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
