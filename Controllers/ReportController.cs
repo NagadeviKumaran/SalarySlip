@@ -1,30 +1,36 @@
-﻿using FastReport.Export.Html;
-using FastReport;
-using Microsoft.AspNetCore.Http;
+﻿using FastReport;
+using FastReport.Export.Html;
 using Microsoft.AspNetCore.Mvc;
-using Payslip.Data;
 using PuppeteerSharp;
-using FastReport.Export.PdfSimple;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Threading.Tasks;
+using Payslip.Models;
+using System.Linq;
+using Payslip.Data;
 
-namespace Payslip.Controllers
+namespace PaySlip.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ReportController : ControllerBase
     {
-        private readonly string reportPath = @"C:\Users\KUMARAN.K.B\FastReport\Reports\PaySlip.frx";
+        private readonly IWebHostEnvironment _env;
         private readonly SalarySlipContext _context;
 
-        public ReportController(SalarySlipContext context)
+        public ReportController(IWebHostEnvironment env, SalarySlipContext context)
         {
+            _env = env;
             _context = context;
         }
-
-        
 
         [HttpGet("{empId}")]
         public async Task<IActionResult> ExportSalarySlipToPdfAsync(int empId)
         {
+            // Resolve the report path
+            string reportPath = Path.Combine(_env.ContentRootPath, "Reports", "payslip.frx");
+
+
             // Create a report instance
             Report report = new Report();
 
@@ -44,16 +50,14 @@ namespace Payslip.Controllers
                 // Register the SalarySlip data as a data source
                 report.RegisterData(new[] { salarySlip }, "SalarySlip");
 
+                // Enable the data source
                 report.GetDataSource("SalarySlip").Enabled = true;
 
-                // Set the filter expression in the report
-                
+                // Set the EMPID parameter in the report
                 report.SetParameterValue("EMPID", empId);
+
                 // Prepare the report
                 report.Prepare();
-
-               
-
 
                 // Export the report to HTML
                 var htmlExport = new HTMLExport
@@ -105,6 +109,5 @@ namespace Payslip.Controllers
                 report.Dispose();
             }
         }
-
     }
 }
