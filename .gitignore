@@ -267,15 +267,13 @@ UpgradeLog*.htm
 ServiceFabricBackup/
 *.rptproj.bak
 
-# Ignore all SQL files, except those in backupdb
-*.sql
-!BackupDb/SalarySlip.sql
 
 
 # SQL Server files
 *.mdf
 *.ldf
 *.ndf
+*.sql
 
 
 # Business Intelligence projects
