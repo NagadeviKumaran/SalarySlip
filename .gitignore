@@ -269,13 +269,14 @@ ServiceFabricBackup/
 
 # Ignore all SQL files, except those in backupdb
 *.sql
-!backupdb/backup.sql
+!BackupDb/SalarySlip.sql
 
 
 # SQL Server files
 *.mdf
 *.ldf
 *.ndf
+
 
 # Business Intelligence projects
 *.rdl.data
